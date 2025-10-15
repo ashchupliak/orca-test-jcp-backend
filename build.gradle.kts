@@ -37,10 +37,13 @@ dependencies {
     testImplementation("io.mockk:mockk:1.13.9")
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
     }
 }
 
