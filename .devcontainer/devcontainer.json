@@ -4,6 +4,16 @@
 	"service": "app",
 	"workspaceFolder": "/workspace",
 
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "17",
+			"installGradle": true,
+			"gradleVersion": "8.5"
+		},
+		"ghcr.io/devcontainers/features/git:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -59,10 +69,6 @@
 			"label": "PostgreSQL",
 			"onAutoForward": "silent"
 		}
-	},
-
-	"features": {
-		"ghcr.io/devcontainers/features/github-cli:1": {}
 	},
 
 	"waitFor": "postCreateCommand",
