@@ -3,7 +3,7 @@ services:
     image: mcr.microsoft.com/devcontainers/java:17-bullseye
 
     volumes:
-      - ../..:/workspaces:cached
+      - ..:/workspace:cached
 
     command: sleep infinity
 
