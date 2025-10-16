@@ -71,7 +71,5 @@
 		}
 	},
 
-	"waitFor": "postCreateCommand",
-
-	"remoteUser": "vscode"
+	"waitFor": "postCreateCommand"
 }
