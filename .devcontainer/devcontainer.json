@@ -53,7 +53,7 @@
 		"SPRING_PROFILES_ACTIVE": "dev"
 	},
 
-	"postCreateCommand": "./gradlew --version'",
+	"postCreateCommand": "./gradlew --version",
 
 	"postStartCommand": "echo '✅ Backend service ready. Database: postgres:5432/appdb'",
 
