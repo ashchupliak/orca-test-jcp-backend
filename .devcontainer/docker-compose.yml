@@ -5,6 +5,9 @@ services:
     volumes:
       - ..:/workspace:cached
 
+    ports:
+      - "18080:8080"
+
     command: sleep infinity
 
     network_mode: service:postgres
