@@ -2,15 +2,13 @@ services:
   app:
     image: mcr.microsoft.com/devcontainers/java:17-bullseye
 
-    volumes:
-      - ..:/workspace:cached
-
     ports:
       - "18080:8080"
 
     command: sleep infinity
 
-    network_mode: service:postgres
+    networks:
+      - services-network
 
     depends_on:
       - postgres
@@ -29,7 +27,9 @@ services:
 
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+    networks:
+      - services-network
 
     environment:
       POSTGRES_USER: appuser
@@ -44,3 +44,5 @@ services:
 
 volumes:
   postgres-data:
+networks:
+  services-network:
