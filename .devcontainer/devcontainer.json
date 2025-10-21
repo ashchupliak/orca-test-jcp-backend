@@ -10,8 +10,11 @@
 			"installGradle": true,
 			"gradleVersion": "8.5"
 		},
+		"ghcr.io/devcontainers/features/azure-cli:1": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
 		"ghcr.io/devcontainers/features/git:1": {},
-		"ghcr.io/devcontainers/features/github-cli:1": {}
+		"ghcr.io/devcontainers/features/github-cli:1": {},
+		
 	},
 
 	"customizations": {
@@ -71,5 +74,7 @@
 		}
 	},
 
-	"waitFor": "postCreateCommand"
+	"waitFor": "postCreateCommand",
+
+	"remoteUser": "vscode"
 }

@@ -1,6 +1,8 @@
 services:
   app:
-    image: mcr.microsoft.com/devcontainers/java:17-bullseye
+    build:
+      context: ./jcp
+      dockerfile: Dockerfile
 
     ports:
       - "18080:8080"
