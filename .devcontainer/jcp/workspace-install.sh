@@ -1,8 +1,23 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Detect platform architecture
+ARCH=$(uname -m)
+case "$ARCH" in
+  x86_64|amd64)
+    DEFAULT_PLATFORM="linux_x64"
+    ;;
+  aarch64|arm64)
+    DEFAULT_PLATFORM="linux_aarch64"
+    ;;
+  *)
+    echo "Unsupported architecture: $ARCH" >&2
+    exit 1
+    ;;
+esac
+
 # Config (use bash assignments; allow env overrides)
-FLEET_DOCKER_PLATFORM="${FLEET_DOCKER_PLATFORM:-linux_aarch64}"
+FLEET_DOCKER_PLATFORM="${FLEET_DOCKER_PLATFORM:-$DEFAULT_PLATFORM}"
 FLEET_VERSION="${FLEET_VERSION:-253.588}"
 LAUNCHER_VERSION="${LAUNCHER_VERSION:-$FLEET_VERSION}"
 LAUNCHER_LOCATION="${LAUNCHER_LOCATION:-/usr/local/bin/fleet-launcher}"
