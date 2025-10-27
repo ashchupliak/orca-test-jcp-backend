@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      context: ./jcp
+      context: .
       dockerfile: Dockerfile
 
     ports:
