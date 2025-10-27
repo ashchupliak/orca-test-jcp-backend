@@ -20,9 +20,8 @@
     "DB_NAME": "appdb",
     "DB_USER": "appuser",
     "DB_PASSWORD": "apppass",
-    "SPRING_PROFILES_ACTIVE": "dev",
-    "PORT": "7001"
+    "SPRING_PROFILES_ACTIVE": "dev"
   },
 
-  "forwardPorts": [7001, 5432]
+  "forwardPorts": [8080, 5432]
 }
