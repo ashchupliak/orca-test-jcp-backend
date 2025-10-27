@@ -53,17 +53,18 @@
 		"DB_NAME": "appdb",
 		"DB_USER": "appuser",
 		"DB_PASSWORD": "apppass",
-		"SPRING_PROFILES_ACTIVE": "dev"
+		"SPRING_PROFILES_ACTIVE": "dev",
+		"PORT": "7001"
 	},
 
 	"postCreateCommand": "./gradlew --version",
 
 	"postStartCommand": "echo '✅ Backend service ready. Database: postgres:5432/appdb'",
 
-	"forwardPorts": [8080, 5432],
+	"forwardPorts": [7001, 5432],
 
 	"portsAttributes": {
-		"8080": {
+		"7001": {
 			"label": "Spring Boot App",
 			"onAutoForward": "notify",
 			"protocol": "http"
