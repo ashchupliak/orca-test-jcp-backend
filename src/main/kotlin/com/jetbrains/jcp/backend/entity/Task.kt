@@ -8,10 +8,10 @@ import java.time.LocalDateTime
 data class Task(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Int? = null,
 
     @Column(name = "user_id")
-    val userId: Long,
+    val userId: Int,
 
     @Column(nullable = false, length = 255)
     val title: String,
