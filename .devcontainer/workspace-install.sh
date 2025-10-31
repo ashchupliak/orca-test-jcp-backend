@@ -22,13 +22,8 @@ FLEET_VERSION="${FLEET_VERSION:-253.597}"
 LAUNCHER_VERSION="${LAUNCHER_VERSION:-$FLEET_VERSION}"
 LAUNCHER_LOCATION="${LAUNCHER_LOCATION:-/usr/local/bin/fleet-launcher}"
 
-# Install curl if needed, then fetch launcher
-apt-get update -qq \
-  && apt-get install -y --no-install-recommends curl ca-certificates \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
-
 # Download launcher with retry logic and IPv4 preference (improvements over main branch)
+# Note: curl and ca-certificates are already installed in the Dockerfile, so no need to install them here
 LAUNCHER_URL="https://plugins.jetbrains.com/fleet-parts/launcher/${FLEET_DOCKER_PLATFORM}/launcher-${LAUNCHER_VERSION}"
 MAX_ATTEMPTS=5
 DELAY=2
