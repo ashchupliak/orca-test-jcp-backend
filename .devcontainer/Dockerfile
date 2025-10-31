@@ -2,8 +2,8 @@
 # This avoids SDKMAN 503 errors and reduces build time from 10+ minutes to ~2-3 minutes
 FROM mcr.microsoft.com/devcontainers/java:1-21
 
-# Install Docker-in-Docker support and Claude Code dependencies in a single layer
-# This reduces build time by combining apt operations and improving cache efficiency
+# Install Docker-in-Docker support (pre-install to avoid runtime downloads)
+# Detect OS type (Debian vs Ubuntu) and use appropriate Docker repository
 RUN apt-get update -qq \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -20,13 +20,15 @@ RUN apt-get update -qq \
         && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $CODENAME stable" > /etc/apt/sources.list.d/docker.list; \
     fi \
     && apt-get update -qq \
+    && apt-get install -y --no-install-recommends docker-ce-cli docker-buildx-plugin \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+ (git and build-essential are already in the base image)
+RUN apt-get update -qq \
     && apt-get install -y --no-install-recommends \
-        docker-ce-cli \
-        docker-buildx-plugin \
-        git \
         python3 \
         python3-pip \
-        build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
