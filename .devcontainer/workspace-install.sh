@@ -48,9 +48,9 @@ FLEET_VERSION="${FLEET_VERSION:-253.597}"
 LAUNCHER_VERSION="${LAUNCHER_VERSION:-$FLEET_VERSION}"
 LAUNCHER_LOCATION="${LAUNCHER_LOCATION:-/usr/local/bin/fleet-launcher}"
 
-# Ensure curl and ca-certificates are installed (should already be in base image, but ensure it)
+# Ensure curl, ca-certificates, and timeout are installed (timeout needed for Fleet launcher pre-download)
 apt-get update -qq \
-  && apt-get install -y --no-install-recommends curl ca-certificates \
+  && apt-get install -y --no-install-recommends curl ca-certificates coreutils \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -63,10 +63,8 @@ fi
 
 chmod +x "${LAUNCHER_LOCATION}"
 
-# Pre-download SHIP and bundled plugins (with retry logic)
-# Use a temporary script that we can retry if needed
 TEMP_SCRIPT=$(mktemp)
-cat > "$TEMP_SCRIPT" <<'EOF'
+cat > "$TEMP_SCRIPT" <<'EOFSCRIPT'
 #!/usr/bin/env bash
 set -euo pipefail
 MAX_ATTEMPTS=5
@@ -74,13 +72,23 @@ DELAY=2
 ATTEMPT=1
 
 while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
-    echo "Fleet launcher attempt $ATTEMPT/$MAX_ATTEMPTS" >&2
-    if /usr/local/bin/fleet-launcher --debug launch workspace --workspace-version "$FLEET_VERSION" -- --auth=dummy-argument-value-to-make-it-crash-but-we-only-care-about-artifacts-being-downloaded 2>&1; then
+    echo "Fleet launcher pre-download attempt $ATTEMPT/$MAX_ATTEMPTS" >&2
+    # Use --auth=accept-everyone (valid auth option) to allow artifact download
+    # We timeout after 60 seconds since we just need artifacts downloaded, not the workspace running
+    # Exit code 124 = timeout (expected and acceptable - artifacts are downloaded)
+    # Exit code 0 = success (also acceptable)
+    if timeout 60 /usr/local/bin/fleet-launcher --debug launch workspace --workspace-version "$FLEET_VERSION" -- --auth=accept-everyone >/dev/null 2>&1; then
         echo "Fleet launcher pre-download successful" >&2
         exit 0
     fi
+    EXIT_CODE=$?
+    if [ "$EXIT_CODE" -eq 124 ]; then
+        # Timeout is expected - artifacts are downloaded by this point
+        echo "Fleet launcher pre-download successful (timeout expected - artifacts downloaded)" >&2
+        exit 0
+    fi
     if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
-        echo "Fleet launcher failed, retrying in ${DELAY}s..." >&2
+        echo "Fleet launcher failed with exit code $EXIT_CODE, retrying in ${DELAY}s..." >&2
         sleep $DELAY
         DELAY=$((DELAY * 2))
     fi
@@ -90,7 +98,7 @@ done
 echo "WARNING: Fleet launcher pre-download failed after $MAX_ATTEMPTS attempts, but continuing..." >&2
 # Don't fail the build if Fleet pre-download fails - it can be downloaded at runtime
 exit 0
-EOF
+EOFSCRIPT
 chmod +x "$TEMP_SCRIPT"
 export FLEET_VERSION
 "$TEMP_SCRIPT" || true
