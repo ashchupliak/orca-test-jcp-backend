@@ -63,5 +63,6 @@ fi
 chmod +x "${LAUNCHER_LOCATION}"
 
 # Ensures SHIP, bundled plugins are downloaded to the image
-# Use the original dummy auth value that works - Fleet downloads artifacts before validating auth
-"${LAUNCHER_LOCATION}" --debug launch workspace --workspace-version $FLEET_VERSION -- --auth=dummy-argument-value-to-make-it-crash-but-we-only-care-about-artifacts-being-downloaded
+# Fleet downloads artifacts before validating auth, so we can use dummy auth and ignore the validation error
+# The error happens after artifacts are downloaded, so we treat it as success for our purposes
+"${LAUNCHER_LOCATION}" --debug launch workspace --workspace-version $FLEET_VERSION -- --auth=dummy-argument-value-to-make-it-crash-but-we-only-care-about-artifacts-being-downloaded || true
