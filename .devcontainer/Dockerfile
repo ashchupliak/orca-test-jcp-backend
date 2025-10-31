@@ -3,15 +3,22 @@
 FROM mcr.microsoft.com/devcontainers/java:1-21
 
 # Install Docker-in-Docker support (pre-install to avoid runtime downloads)
-# Retry logic for apt operations to handle transient network issues
+# Detect OS type (Debian vs Ubuntu) and use appropriate Docker repository
 RUN apt-get update -qq \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
         curl \
         gnupg \
         lsb-release \
-    && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list \
+    && DISTRO=$(lsb_release -is | tr '[:upper:]' '[:lower:]') \
+    && CODENAME=$(lsb_release -cs) \
+    && if [ "$DISTRO" = "debian" ]; then \
+        curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg \
+        && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $CODENAME stable" > /etc/apt/sources.list.d/docker.list; \
+    else \
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg \
+        && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $CODENAME stable" > /etc/apt/sources.list.d/docker.list; \
+    fi \
     && apt-get update -qq \
     && apt-get install -y --no-install-recommends docker-ce-cli docker-buildx-plugin \
     && apt-get clean \
