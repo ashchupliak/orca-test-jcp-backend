@@ -22,8 +22,7 @@ FLEET_VERSION="${FLEET_VERSION:-253.597}"
 LAUNCHER_VERSION="${LAUNCHER_VERSION:-$FLEET_VERSION}"
 LAUNCHER_LOCATION="${LAUNCHER_LOCATION:-/usr/local/bin/fleet-launcher}"
 
-# Download launcher with retry logic and IPv4 preference (improvements over main branch)
-# Note: curl and ca-certificates are already installed in the Dockerfile, so no need to install them here
+# Download launcher with retry logic and IPv4 preference
 LAUNCHER_URL="https://plugins.jetbrains.com/fleet-parts/launcher/${FLEET_DOCKER_PLATFORM}/launcher-${LAUNCHER_VERSION}"
 MAX_ATTEMPTS=5
 DELAY=2
@@ -50,8 +49,8 @@ fi
 chmod +x "${LAUNCHER_LOCATION}"
 
 # Ensures SHIP, bundled plugins are downloaded to the image
-# Fleet downloads artifacts before validating auth, so the validation error happens after artifacts are downloaded
-# Temporarily disable errexit to allow the script to continue after the expected auth validation error
+# Fleet downloads artifacts BEFORE validating auth, it intentionally triggers an auth error to force artifact downloads.
+# Temporarily disable errexit for this expected failure.
 set +e
 "${LAUNCHER_LOCATION}" --debug launch workspace --workspace-version $FLEET_VERSION -- --auth=dummy-argument-value-to-make-it-crash-but-we-only-care-about-artifacts-being-downloaded
 set -e
