@@ -4,15 +4,6 @@
   "service": "app",
   "workspaceFolder": "/workspace",
 
-  "features": {
-    "ghcr.io/devcontainers/features/java:1": {
-      "version": "21-oracle",
-      "jdkDistro": "oracle"
-    },
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    
-  },
-
   "remoteEnv": {
     "GRADLE_USER_HOME": "/workspace/.gradle",
     "DB_HOST": "postgres",
