@@ -1,5 +1,4 @@
-# Use pre-built Java image instead of installing via SDKMAN (much faster and more stable)
-# This avoids SDKMAN 503 errors and reduces build time from 10+ minutes to ~2-3 minutes
+# Use pre-built Java image with SDKMAN and microsoft packages to avoid 503 errors
 FROM mcr.microsoft.com/devcontainers/java:1-21
 
 # Install Docker-in-Docker support (pre-install to avoid runtime downloads)
@@ -32,6 +31,6 @@ RUN apt-get update -qq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Pre-download Fleet launcher and dependencies (with retry logic and IPv4 preference)
+# Pre-download Fleet launcher and dependencies
 COPY --chmod=0755 ./workspace-install.sh /tmp/workspace-install.sh
 RUN /tmp/workspace-install.sh
