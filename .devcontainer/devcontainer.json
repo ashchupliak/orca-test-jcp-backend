@@ -4,6 +4,10 @@
   "service": "app",
   "workspaceFolder": "/workspace",
 
+  "features": {
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
+  },
+
   "remoteEnv": {
     "GRADLE_USER_HOME": "/workspace/.gradle",
     "DB_HOST": "postgres",
