@@ -4,6 +4,10 @@
   "service": "app",
   "workspaceFolder": "/workspace",
 
+  "features": {
+    
+  },
+
   "remoteEnv": {
     "GRADLE_USER_HOME": "/workspace/.gradle",
     "DB_HOST": "postgres",
