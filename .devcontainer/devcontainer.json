@@ -18,5 +18,5 @@
     "SPRING_PROFILES_ACTIVE": "dev"
   },
 
-  "forwardPorts": [8080, 5432]
+  "forwardPorts": [8080, 5432, 35679, 35697]
 }

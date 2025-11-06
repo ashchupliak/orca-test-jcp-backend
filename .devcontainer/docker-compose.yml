@@ -6,6 +6,8 @@ services:
 
     ports:
       - "18080:8080"
+      - "35679:35679"
+      - "35697:35697"
 
     volumes:
       - ..:/workspace:cached
