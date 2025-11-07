@@ -12,7 +12,7 @@ services:
     volumes:
       - ..:/workspace:cached
 
-    command: bash -c "echo '=== Building and testing backend ===' && ./gradlew clean build test && echo '=== BUILD SUCCESS ===' && echo '=== Starting Spring Boot server ===' && ./gradlew bootRun"
+    command: sleep infinity
 
     networks:
       - services-network
