@@ -4,9 +4,7 @@
   "service": "app",
   "workspaceFolder": "/workspace",
 
-  "features": {
-    
-  },
+  "features": {},
 
   "remoteEnv": {
     "GRADLE_USER_HOME": "/workspace/.gradle",
