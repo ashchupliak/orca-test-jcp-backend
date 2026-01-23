@@ -3,7 +3,9 @@ FROM mcr.microsoft.com/devcontainers/java:1-21
 
 # Install Docker-in-Docker support (pre-install to avoid runtime downloads)
 # Detect OS type (Debian vs Ubuntu) and use appropriate Docker repository
-RUN apt-get update -qq \
+# Remove Yarn repo with expired GPG key (EXPKEYSIG 23E7166788B63E1E) that causes apt-get update to fail
+RUN rm -f /etc/apt/sources.list.d/yarn.list \
+    && apt-get update -qq \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
         curl \
