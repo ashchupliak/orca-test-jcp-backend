@@ -16,5 +16,10 @@
     "SPRING_PROFILES_ACTIVE": "dev"
   },
 
-  "forwardPorts": [8080, 5432, 35679, 35697]
+  "portsAttributes": {
+    "8080": {"onAutoForward": "silent"},
+    "5432": {"onAutoForward": "silent"},
+    "35679": {"onAutoForward": "silent"},
+    "35697": {"onAutoForward": "silent"}
+  }
 }

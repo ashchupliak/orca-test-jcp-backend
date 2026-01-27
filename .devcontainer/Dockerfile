@@ -25,7 +25,7 @@ RUN rm -f /etc/apt/sources.list.d/yarn.list \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
- (git and build-essential are already in the base image)
+# Note: git and build-essential are already in the base image
 RUN apt-get update -qq \
     && apt-get install -y --no-install-recommends \
         python3 \

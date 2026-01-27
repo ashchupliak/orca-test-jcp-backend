@@ -4,10 +4,13 @@ services:
       context: .
       dockerfile: Dockerfile
 
-    ports:
-      - "8080:8080"
-      - "35679:35679"
-      - "35697:35697"
+    # Note: Host port mappings removed because FRPC handles external access.
+    # FRPC binds to host ports before docker compose runs, causing port conflicts.
+    # The container ports are still exposed on the docker network for FRPC to access.
+    expose:
+      - "8080"
+      - "35679"
+      - "35697"
 
     volumes:
       - ..:/workspace:cached
